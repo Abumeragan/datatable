@@ -141,6 +141,7 @@ public class DataTableTest {
 		}
 		
 		DataTable filteredTable = dt.filterEqual("class", "even");
+		
 		assertEquals(50, filteredTable.rowsCount());
 		for (int i = 0; i < 50; i++) {
 			row = filteredTable.getRow(i);
@@ -163,7 +164,30 @@ public class DataTableTest {
 		}
 		
 		DataTable sortedTable = dt.sortAscending("number");
+		assertEquals(5, sortedTable.rowsCount());
 		for (int i = 0; i < 5; i++) {
+			row = sortedTable.getRow(i);
+			assertEquals(4-i, row.getValue("id"));
+			assertEquals(i, row.getValue("number"));						
+		}
+	}
+	
+	@Test
+	public void sortRowsDescending() {
+		DataTableRow row;
+		dt.addCollumn("id", DataTable.TYPE_INT);
+		dt.addCollumn("number", DataTable.TYPE_INT);
+		
+		for (int i = 0; i < 5; i++) {
+			row = dt.createRow();
+			row.setValue("id", i);
+			row.setValue("number", 4-i);
+			dt.insertRow(row);
+		}
+		
+		DataTable sortedTable = dt.sortDescending("number");
+		assertEquals(5, sortedTable.rowsCount());
+		for (int i = 5; i >= 0; i++) {
 			row = sortedTable.getRow(i);
 			assertEquals(4-i, row.getValue("id"));
 			assertEquals(i, row.getValue("number"));						
@@ -182,4 +206,5 @@ public class DataTableTest {
 		}
 		fail();
 	}
+	
 }
